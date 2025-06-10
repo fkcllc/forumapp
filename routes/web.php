@@ -21,3 +21,7 @@ use App\Http\Controllers\MyCounterController;
 // テスト用のルート
 Route::get('/mycounter', [MyCounterController::class, 'increment']);
 // *PHP хэлэнд классын статик функц эсвэл гишүүнд хандахдаа ::(scope resolution operator) ашигладаг.
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

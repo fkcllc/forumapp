@@ -1,0 +1,8 @@
+1.Laravel/UI ログインパッケージを追加
+ Resource: https://packagist.org/packages/laravel/ui
+
+ install:
+  composer require laravel/ui --dev
+
+ add VueJS UI:
+  php artisan ui vue --auth
