@@ -51,3 +51,6 @@ Route::prefix('/prefixes')->group(function () {
     Route::put('/test', [PrefController::class, 'pref3method'])->name('pref3named');
 
 });
+
+// Route model binding sample
+Route::get('/binding/{usrBind}', [MyCounterController::class, 'modelbind']);
