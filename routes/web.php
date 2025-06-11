@@ -36,3 +36,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/greeting', function () {
     return 'Hello World';
 });
+
+// Ижил үүрэгтэй маршрутуудыг prefix тодорхойлж групплэх
+use App\Http\Controllers\PrefController;
+Route::prefix('/prefixes')->group(function () {
+
+    // プレフィックスを指定してルートをグループ化
+    // グループ内のルートは、プレフィックスを持つ
+
+    // Unamed routes
+    Route::get('/test', [PrefController::class ,'pref1method']);
+    // named routes
+    Route::post('/test', [PrefController::class, 'pref2method'])->name('pref2named');
+    Route::put('/test', [PrefController::class, 'pref3method'])->name('pref3named');
+
+});
