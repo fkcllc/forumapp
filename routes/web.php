@@ -54,3 +54,6 @@ Route::prefix('/prefixes')->group(function () {
 
 // Route model binding sample
 Route::get('/binding/{usrBind}', [MyCounterController::class, 'modelbind']);
+
+use App\Http\Controllers\ProfileController;
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

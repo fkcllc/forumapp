@@ -15,6 +15,17 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <form id="profileForm"  action="{{ route('profile.index') }}" method="GET">
+                        @csrf
+                        {{-- @method('PUT') --}}
+                        <div class="form-group">
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('profileForm').submit();">
+                                全てプロファイルを見る
+                            </a>
+                        </div>
+                    </form>
+
+
                 </div>
             </div>
         </div>
