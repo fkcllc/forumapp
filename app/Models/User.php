@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Profile;
+use App\Models\Company;
+use App\Models\Role;
+use App\Models\Job;
 
 class User extends Authenticatable
 {
@@ -22,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_type'
     ];
 
     /**
@@ -43,8 +47,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Profile()
+    public function profile()
     {
         return $this->hasOne(Profile::class);
+    }
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
+    public function favourite()
+    {
+        return $this->belongsToMany(Job::class, 'favourites', 'user_id', 'job_id')->withTimestamps();
+    }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }
