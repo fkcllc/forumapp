@@ -16,6 +16,7 @@
                 <th>応募状態</th>
                 <th>最終日</th>
                 <th>作成日</th>
+                <th>操作</th> {{-- 追加 --}}
             </tr>
         </thead>
         <tbody>
@@ -31,6 +32,15 @@
                 <td>{{ $job->status }}</td>
                 <td>{{ $job->last_date }}</td>
                 <td>{{ $job->created_at->diffForHumans() }}</td>
+                <td>
+                    <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-info btn-sm">View</a>
+                    <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">Delete</button>
+                    </form>
+                </td>
             </tr>
             @endforeach
         </tbody>
