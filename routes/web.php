@@ -57,3 +57,11 @@ Route::get('/binding/{usrBind}', [MyCounterController::class, 'modelbind']);
 
 use App\Http\Controllers\ProfileController;
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+// JapanWork --------------------------------------------------- Start
+
+use App\Http\Controllers\JobController;
+
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+
+// JapanWork --------------------------------------------------- End

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Company;
 use App\Models\Job;
 use App\Models\User;
+use Faker\Generator as Faker; // Import Faker
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Job>
  */
@@ -20,8 +21,10 @@ class JobFactory extends Factory
      */
     public function definition()
     {
-    $faker = $this->faker;
-    $title = $faker->text();
+    ////$faker = $this->faker;
+    $faker = \Faker\Factory::create('ja_JP');
+    // $title = $faker->text();
+    $title = $faker->realText(50); // 50文字程度の日本語テキスト
 
     return [
         'user_id' => User::all()->random()->id,
@@ -35,7 +38,7 @@ class JobFactory extends Factory
         'address' => $faker->address,
         'type' => 'fulltime',
         'status' => rand(0, 1),
-        'last_date' => $faker->dateTime(),
+        'last_date' => $faker->dateTimeBetween('now', '+30 days'),  //$faker->dateTime(),
         'number_of_vacancy' => rand(1, 10),
         'experience' => rand(1, 10),
         'gender' => $faker->randomElement(['male', 'female']),

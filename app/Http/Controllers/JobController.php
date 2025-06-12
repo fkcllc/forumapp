@@ -14,7 +14,9 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        $jobs = Job::paginate(10); // 1ページ5件
+        // dd($jobs);
+        return view('jobs.index', compact('jobs'));
     }
 
     /**
