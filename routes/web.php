@@ -61,9 +61,10 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 // JapanWork --------------------------------------------------- Start
 
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\CompanyController;
 
 // Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
-Route::resource('jobs', App\Http\Controllers\JobController::class);
+Route::resource('jobs', JobController::class);
 // Ингэснээр дараах бүх маршрут автоматаар үүснэ:
 // GET /jobs → index
 // GET /jobs/create → create
@@ -72,5 +73,7 @@ Route::resource('jobs', App\Http\Controllers\JobController::class);
 // GET /jobs/{job}/edit→ edit
 // PUT /jobs/{job} → update
 // DELETE /jobs/{job} → destroy
+
+Route::resource('companies', CompanyController::class);
 
 // JapanWork --------------------------------------------------- End
