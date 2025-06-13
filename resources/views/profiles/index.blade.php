@@ -1,3 +1,10 @@
+@php
+    use App\Constants\UserType;
+
+    $isAdmin = Auth::check() && Auth::user()->user_type === UserType::ADMIN;
+
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -6,11 +13,12 @@
         <div class="col">
             <h2 class="mb-0">プロフィール一覧</h2>
         </div>
-        @auth
         <div class="col-auto text-end">
-            <a href="{{ route('profiles.create') }}" class="btn btn-success">＋ 新規作成</a>
+            @if ($isAdmin)
+                <a href="{{ route('profiles.create') }}" class="btn btn-success">＋ 新規作成</a>
+            @endif
         </div>
-        @endauth
+
     </div>
     <table class="table table-bordered">
         <thead class="bg-primary text-white text-center align-middle">
@@ -35,21 +43,26 @@
                     <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-info btn-sm">詳細</a>
                     @auth
                     <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-warning btn-sm">編集</a>
-                    <form action="{{ route('profiles.destroy', $profile->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">削除</button>
-                    </form>
+                        @if ($isAdmin)
+                            <form action="{{ route('profiles.destroy', $profile->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">削除</button>
+                            </form>
+                        @endif
                     @endauth
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    @if (Auth::user() && Auth::user()->user_type === UserType::ADMIN)
     <div>
         全 {{ $profiles->total() }} 件中 {{ $profiles->firstItem() }} 件から {{ $profiles->lastItem() }} 件を表示
     </div>
     {{ $profiles->links('vendor.pagination.bootstrap-4') }}
+    @endif
+
 </div>
 @endsection
 

@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Constants\UserType; // ユーザータイプの定数を使用する場合
 
 class ProfileController extends Controller
 {
+
+    // すべてのアクションに認証ミドルウェアを適用
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,15 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = Profile::orderBy('created_at', 'desc')->paginate(10);
+        $page = 10; // 1ページあたりの表示件数
+        $user = auth()->user();
+
+        if ($user->user_type === UserType::ADMIN) {
+            $profiles = Profile::orderBy('created_at', 'desc')->paginate($page);
+        } else {
+            $profiles = Profile::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($page);
+        }
+
         return view('profiles.index', compact('profiles'));
     }
 
