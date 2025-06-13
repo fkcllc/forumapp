@@ -27,12 +27,17 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         if ($user->user_type === UserType::ADMIN) {
-            $profiles = Profile::orderBy('created_at', 'desc')->paginate($page);
+            $users = User::whereHas('profile')
+                ->orderBy('created_at', 'desc')
+                ->paginate($page);
         } else {
-            $profiles = Profile::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($page);
+            $users = User::whereHas('profile')
+            ->where('id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate($page);
         }
 
-        return view('profiles.index', compact('profiles'));
+        return view('profiles.index', compact('users'));
     }
 
     /**

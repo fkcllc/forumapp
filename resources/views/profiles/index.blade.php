@@ -32,19 +32,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($profiles as $profile)
+            @foreach($users as $user)
             <tr>
-                <td>{{ $loop->iteration + ($profiles->currentPage() - 1) * $profiles->perPage() }}</td>
-                <td>{{ $profile->name }}</td>
-                <td>{{ $profile->email }}</td>
-                <td>{{ $profile->bio }}</td>
-                <td>{{ \Carbon\Carbon::parse($profile->created_at)->format('Y/m/d H:i:s') }}</td>
+                <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+                <td>{{ optional($user->profile)->bio }}</td>
                 <td>
-                    <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-info btn-sm">詳細</a>
+                    {{ optional($user->profile)->created_at ? \Carbon\Carbon::parse($user->profile->created_at)->format('Y/m/d H:i:s') : ' ' }}
+                </td>
+                <td>
+                    <a href="{{ route('profiles.show', optional($user->profile)->id) }}" class="btn btn-info btn-sm">詳細</a>
                     @auth
-                    <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-warning btn-sm">編集</a>
+                    <a href="{{ route('profiles.edit', optional($user->profile)->id) }}" class="btn btn-warning btn-sm">編集</a>
                         @if ($isAdmin)
-                            <form action="{{ route('profiles.destroy', $profile->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('profiles.destroy', optional($user->profile)->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">削除</button>
@@ -58,9 +60,9 @@
     </table>
     @if (Auth::user() && Auth::user()->user_type === UserType::ADMIN)
     <div>
-        全 {{ $profiles->total() }} 件中 {{ $profiles->firstItem() }} 件から {{ $profiles->lastItem() }} 件を表示
+        全 {{ $users->total() }} 件中 {{ $users->firstItem() }} 件から {{ $users->lastItem() }} 件を表示
     </div>
-    {{ $profiles->links('vendor.pagination.bootstrap-4') }}
+    {{ $users->links('vendor.pagination.bootstrap-4') }}
     @endif
 
 </div>
