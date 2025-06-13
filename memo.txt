@@ -6,3 +6,6 @@
 
  add VueJS UI:
   php artisan ui vue --auth
+
+2.faker 使う例
+ https://en-jp.wantedly.com/companies/logical-studio/post_articles/916638

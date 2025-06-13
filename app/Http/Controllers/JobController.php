@@ -14,7 +14,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        $jobs = Job::paginate(10); // 1ページ5件
+        $jobs = Job::orderBy('created_at', 'desc')->paginate(10); // 1ページ5件
         // dd($jobs);
         return view('jobs.index', compact('jobs'));
     }
@@ -26,7 +26,10 @@ class JobController extends Controller
      */
     public function create()
     {
-        //
+        // $types = Job::select('type')->distinct()->pluck('type')->filter()->values();
+        $types = array('アルバイト','パート','正社員','嘱託社員','契約社員','派遣社員');
+
+        return view('jobs.create', compact('types'));
     }
 
     /**
@@ -37,7 +40,18 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'position'    => 'required|string|max:255',
+            'category_id' => 'nullable|integer',
+            'address'     => 'required|string|max:255',
+            'type'        => 'required|string|max:255',
+            'status'      => 'nullable|string|max:255',
+            'last_date'   => 'required|date',
+        ]);
+
+        Job::create($validated);
+
+        return redirect()->route('jobs.index')->with('success', '求人を追加しました');
     }
 
     /**
@@ -61,7 +75,9 @@ class JobController extends Controller
     public function edit($id)
     {
         $job = Job::findOrFail($id);
-        return view('jobs.edit', compact('job'));
+        //$types = \App\Models\Job::select('type')->distinct()->pluck('type')->filter()->values();
+        $types = array('アルバイト','パート','正社員','嘱託社員','契約社員','派遣社員');
+        return view('jobs.edit', compact('job', 'types'));
     }
 
     public function update(Request $request, $id)

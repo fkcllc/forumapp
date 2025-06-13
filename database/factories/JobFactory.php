@@ -23,6 +23,7 @@ class JobFactory extends Factory
     {
     ////$faker = $this->faker;
     $faker = \Faker\Factory::create('ja_JP');
+    $faker1 = \Faker\Factory::create('en_US'); // 英語のFakerインスタンスを作成
     // $title = $faker->text();
     $title = $faker->realText(50); // 50文字程度の日本語テキスト
 
@@ -34,9 +35,9 @@ class JobFactory extends Factory
         'slug' => Str::slug($title),
         'description' => $faker->paragraph(rand(2, 20)),
         'role' => $faker->name(),
-        'position' => $faker->jobTitle,
+        'position' => $faker1->jobTitle(),
         'address' => $faker->address,
-        'type' => 'fulltime',
+        'type' => $faker->randomElement(['アルバイト'],['正社員'],['嘱託社員'],['契約社員'],['派遣社員'],['パート']),
         'status' => rand(0, 1),
         'last_date' => $faker->dateTimeBetween('now', '+30 days'),  //$faker->dateTime(),
         'number_of_vacancy' => rand(1, 10),

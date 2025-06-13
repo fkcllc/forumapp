@@ -25,15 +25,17 @@
             <td>{{ $job->status }}</td>
         </tr>
         <tr>
-            <th>最終日</th>
-            <td>{{ $job->last_date }}</td>
+            <th>期限日</th>
+            <td>{{ \Carbon\Carbon::parse($job->last_date)->format('Y/m/d') }}</td>
         </tr>
         <tr>
             <th>作成日</th>
-            <td>{{ $job->created_at }}</td>
+            <td>{{ \Carbon\Carbon::parse($job->created_at)->format('Y/m/d H:i:s') }}</td>
         </tr>
     </table>
     <a href="{{ route('jobs.index') }}" class="btn btn-secondary">一覧へ戻る</a>
+    @auth
     <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-warning">編集</a>
+    @endauth
 </div>
 @endsection
