@@ -55,13 +55,11 @@ Route::prefix('/prefixes')->group(function () {
 // Route model binding sample
 Route::get('/binding/{usrBind}', [MyCounterController::class, 'modelbind']);
 
-use App\Http\Controllers\ProfileController;
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-
 // JapanWork --------------------------------------------------- Start
 
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProfileController;
 
 // Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::resource('jobs', JobController::class);
@@ -75,5 +73,8 @@ Route::resource('jobs', JobController::class);
 // DELETE /jobs/{job} → destroy
 
 Route::resource('companies', CompanyController::class);
+
+// Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::resource('profiles', ProfileController::class);
 
 // JapanWork --------------------------------------------------- End

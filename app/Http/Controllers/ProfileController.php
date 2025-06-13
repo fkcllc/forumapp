@@ -15,9 +15,8 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $all_users = User::all();
-        return view('profile', compact('all_users'));
-
+        $profiles = Profile::orderBy('created_at', 'desc')->paginate(10);
+        return view('profiles.index', compact('profiles'));
     }
 
     /**
@@ -27,7 +26,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        return view('profiles.create');
     }
 
     /**
@@ -38,51 +37,64 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'bio' => 'nullable|string',
+            // бусад талбаруудыг нэмээрэй
+        ]);
+        Profile::create($validated);
+        return redirect()->route('profiles.index')->with('success', 'プロフィールを追加しました');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Profile $profile)
+    public function show($id)
     {
-        //
+        $profile = Profile::findOrFail($id);
+        return view('profiles.show', compact('profile'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Profile $profile)
+    public function edit($id)
     {
-        //
+        $profile = Profile::findOrFail($id);
+        return view('profiles.edit', compact('profile'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profile $profile)
+    public function update(Request $request, $id)
     {
-        //
+        $profile = Profile::findOrFail($id);
+        $profile->update($request->all());
+        return redirect()->route('profiles.index')->with('success', '更新しました');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Profile  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Profile $profile)
+    public function destroy($id)
     {
-        //
+        $profile = Profile::findOrFail($id);
+        $profile->delete();
+        return redirect()->route('profiles.index')->with('success', '削除しました');
     }
 }
